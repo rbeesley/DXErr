@@ -29,9 +29,8 @@ jobs:
 
     strategy:
       matrix:
-        configurations: [Debug, Release]
+        configurations: [Debug-Unicode, Release-Unicode, Debug-ANSI, Release-ANSI]
         platforms: [x86, x64]
-        #unicode: [Unicode, ANSI]
 
     steps:
     - uses: actions/checkout@v4
