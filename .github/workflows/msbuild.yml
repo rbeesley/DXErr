@@ -31,7 +31,7 @@ jobs:
       matrix:
         configurations: [Debug, Release]
         platforms: [x86, x64]
-        unicode: [Unicode, ANSI]
+        #unicode: [Unicode, ANSI]
 
     steps:
     - uses: actions/checkout@v4
