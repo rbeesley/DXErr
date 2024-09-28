@@ -56,15 +56,14 @@ jobs:
           bin/DXErr_*.pdb
         if-no-files-found: ignore
 
-  # produce-artifacts:
-  #   runs-on: windows-latest
-  #   needs: build
+  produce-artifacts:
+    runs-on: windows-latest
+    needs: build
     
-  #   steps:
-  #   - name: Zip Release
-  #     uses: TheDoctor0/zip-release@0.7.6
-  #     with:
-  #       type: 'zip'
-  #       path: 'bin/'
-  #       filename: 'DXErr.zip'
-  #       exclusions: 'intermediates/ x64/ Win32/'
+    steps:
+    - name: combine-artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: release
+        merge-multiple: true
+    - run: ls -R release
