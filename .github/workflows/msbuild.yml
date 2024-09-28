@@ -1,0 +1,76 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Build DXErr
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  # Path to the solution file relative to the root of the project.
+  SOLUTION_FILE_PATH: .
+
+  # Configuration type to build.
+  # You can convert this to a build matrix if you need coverage of multiple configuration types.
+  # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+  BUILD_CONFIGURATION: Release
+
+permissions:
+  contents: read
+
+jobs:      
+  build:
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        configurations: [Debug-Unicode, Release-Unicode, Debug-ANSI, Release-ANSI]
+        platforms: [x86, x64]
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Build
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      # Add additional options to the MSBuild command line here (like platform or verbosity level).
+      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
+      run: msbuild /m /p:Configuration=${{matrix.configurations}} /p:Platform=${{matrix.platforms}} ${{env.SOLUTION_FILE_PATH}}
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: DXErr-${{ matrix.platforms }}-${{ matrix.configurations }}
+        path: |
+          bin/DXErr.h
+          bin/DXErr_*.lib
+          bin/DXErr_*.pdb
+        if-no-files-found: ignore
+        retention-days: 1
+
+  release-artifact:
+    runs-on: windows-latest
+    needs: build
+    
+    steps:
+    - name: Merge Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: ${{env.GITHUB_WORKSPACE}}/release
+        merge-multiple: true
+    - run: ls -R release
+
+    - name: Upload Release Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Release
+        path: ${{env.GITHUB_WORKSPACE}}/release/*
