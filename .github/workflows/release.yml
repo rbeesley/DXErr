@@ -56,23 +56,23 @@ jobs:
         path: ${{env.GITHUB_WORKSPACE}}/artifacts/stage
         merge-multiple: true
 
-    # - name: Upload Staged Artifact
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: Release
-    #     path: ${{env.GITHUB_WORKSPACE}}/artifacts/stage/*
+  #   - name: Upload Staged Artifact
+  #     uses: actions/upload-artifact@v4
+  #     with:
+  #       name: Release
+  #       path: ${{env.GITHUB_WORKSPACE}}/artifacts/stage/*
 
-  release:
-    name: Create Release
-    runs-on: windows-latest
-    needs: release-assets
+  # release:
+  #   name: Create Release
+  #   runs-on: windows-latest
+  #   needs: release-assets
     
-    steps:
-    # - name: Download build artifacts
-    #   uses: actions/download-artifact@v4
-    #   with:
-    #     path: ${{env.GITHUB_WORKSPACE}}/artifacts/release
-    #     name: Release
+  #   steps:
+  #   - name: Download build artifacts
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #       path: ${{env.GITHUB_WORKSPACE}}/artifacts/release
+  #       name: Release
 
     - name: List artifacts before zipping
       run: |
