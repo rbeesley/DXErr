@@ -1,0 +1,101 @@
+on:
+  workflow_dispatch:
+  push:
+    tags:
+    - '*'
+
+name: Create Release
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        configurations: [Debug-Unicode, Release-Unicode, Debug-ANSI, Release-ANSI]
+        platforms: [x86, x64]
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Build
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      # Add additional options to the MSBuild command line here (like platform or verbosity level).
+      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
+      run: msbuild /m /p:Configuration=${{matrix.configurations}} /p:Platform=${{matrix.platforms}} ${{env.SOLUTION_FILE_PATH}}
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: DXErr-${{ matrix.platforms }}-${{ matrix.configurations }}
+        path: |
+          bin/DXErr.h
+          bin/DXErr_*.lib
+          bin/DXErr_*.pdb
+        if-no-files-found: ignore
+        retention-days: 1
+
+  release-artifact:
+    name: Create Artifacts
+    runs-on: windows-latest
+    needs: build
+    
+    steps:
+    - name: Merge Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: ${{env.GITHUB_WORKSPACE}}/stage
+        merge-multiple: true
+    - run: ls -R release
+
+    - name: Upload Staged Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Release
+        path: ${{env.GITHUB_WORKSPACE}}/stage/*
+
+  release:
+    name: Create Release
+    runs-on: windows-latest
+    needs: release-artifact
+    
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: Release.zip
+    - run: ls -R release
+
+    - name: Create Release
+      id: create_release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/create-release@v1
+      with:
+        draft: false
+        prerelease: false
+        release_name: ${{ github.ref }}
+        tag_name: ${{ github.ref }}
+        body_path: CHANGELOG.md
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload Release
+      id: upload_release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./Release.zip
+        asset_name: Release.zip
+        asset_content_type: application/zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
