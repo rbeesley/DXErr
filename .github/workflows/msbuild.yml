@@ -55,6 +55,7 @@ jobs:
           bin/DXErr_*.lib
           bin/DXErr_*.pdb
         if-no-files-found: ignore
+        retention-days: 1
 
   combine-build-artifacts:
     runs-on: windows-latest
@@ -64,17 +65,17 @@ jobs:
     - name: Merge Artifacts
       uses: actions/download-artifact@v4
       with:
-        path: release
+        path: ${{env.GITHUB_WORKSPACE}}/release
         merge-multiple: true
     - run: ls -R release
 
-  create-release-artifacts:
+  create-release-artifact:
     runs-on: windows-latest
     needs: combine-build-artifacts
 
     steps:
-    - name: Upload Release Artifacts
+    - name: Upload Release Artifact
       uses: actions/upload-artifact@v4
       with:
         name: Release
-        path: release/*
+        path: ${{env.GITHUB_WORKSPACE}}/release/*
