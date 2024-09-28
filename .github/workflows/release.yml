@@ -33,7 +33,7 @@ jobs:
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: msbuild /m /p:Configuration=${{matrix.configurations}} /p:Platform=${{matrix.platforms}} ${{env.SOLUTION_FILE_PATH}}
 
-    - name: Upload Artifacts
+    - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: DXErr-${{ matrix.platforms }}-${{ matrix.configurations }}
@@ -44,43 +44,41 @@ jobs:
         if-no-files-found: ignore
         retention-days: 1
 
-  release-artifact:
-    name: Create Artifacts
+  release-assets:
+    name: Create release assets
     runs-on: windows-latest
     needs: build
     
     steps:
-    - name: Merge Artifacts
+    - name: Merge build artifacts
       uses: actions/download-artifact@v4
       with:
-        path: ${{env.GITHUB_WORKSPACE}}/stage
+        path: ${{env.GITHUB_WORKSPACE}}/artifacts/stage
         merge-multiple: true
-    - run: pwd
-    - run: ls
-    - run: ls /
-    - run: ls ${{env.GITHUB_WORKSPACE}}/stage
 
-    - name: Upload Staged Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: Release
-        path: ${{env.GITHUB_WORKSPACE}}/stage/*
+    # - name: Upload Staged Artifact
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: Release
+    #     path: ${{env.GITHUB_WORKSPACE}}/artifacts/stage/*
 
   release:
     name: Create Release
     runs-on: windows-latest
-    needs: release-artifact
+    needs: release-assets
     
     steps:
-    - name: Download build artifacts
-      uses: actions/download-artifact@v4
-      with:
-        path: ${{env.GITHUB_WORKSPACE}}/release
-        name: Release
-    - run: pwd
-    - run: ls
-    - run: ls /
-    - run: ls ${{env.GITHUB_WORKSPACE}}/release
+    # - name: Download build artifacts
+    #   uses: actions/download-artifact@v4
+    #   with:
+    #     path: ${{env.GITHUB_WORKSPACE}}/artifacts/release
+    #     name: Release
+
+    - name: Create ZIP archive
+      run: |
+        ls -R ${{env.GITHUB_WORKSPACE}}/artifacts
+        zip -r ${{env.GITHUB_WORKSPACE}}/artifacts/Release.zip ./artifacts/stage/*
+        ls -R ${{env.GITHUB_WORKSPACE}}/artifacts
 
     - name: Create Release
       id: create_release
