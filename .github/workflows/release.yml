@@ -74,10 +74,16 @@ jobs:
     #     path: ${{env.GITHUB_WORKSPACE}}/artifacts/release
     #     name: Release
 
-    - name: Create ZIP archive
+    - name: List artifacts before zipping
       run: |
         ls -R ${{env.GITHUB_WORKSPACE}}/artifacts
-        zip -r ${{env.GITHUB_WORKSPACE}}/artifacts/Release.zip ./artifacts/stage/*
+
+    - name: Create ZIP archive
+      run: |
+        Compress-Archive -Path ${{env.GITHUB_WORKSPACE}}/artifacts/stage/* -DestinationPath ${{env.GITHUB_WORKSPACE}}/artifacts/Release.zip
+
+    - name: List artifacts after zipping
+      run: |
         ls -R ${{env.GITHUB_WORKSPACE}}/artifacts
 
     - name: Create Release
