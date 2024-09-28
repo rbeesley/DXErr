@@ -46,10 +46,25 @@ jobs:
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: msbuild /m /p:Configuration=${{matrix.configurations}} /p:Platform=${{matrix.platforms}} ${{env.SOLUTION_FILE_PATH}}
 
-    - name: Zip Release
-      uses: TheDoctor0/zip-release@0.7.6
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
       with:
-        type: 'zip'
-        path: 'bin/'
-        filename: 'DXErr.zip'
-        exclusions: 'intermediates/ x64/ Win32/'
+        name: DXErr-${{ matrix.platforms }}-${{ matrix.configurations }}
+        path: |
+          bin/DXErr_*.h
+          bin/DXErr_*.lib
+          bin/DXErr_*.pdb
+        if-no-files-found: ignore
+
+  # produce-artifacts:
+  #   runs-on: windows-latest
+  #   needs: build
+    
+  #   steps:
+  #   - name: Zip Release
+  #     uses: TheDoctor0/zip-release@0.7.6
+  #     with:
+  #       type: 'zip'
+  #       path: 'bin/'
+  #       filename: 'DXErr.zip'
+  #       exclusions: 'intermediates/ x64/ Win32/'
