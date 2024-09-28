@@ -33,7 +33,7 @@ jobs:
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: msbuild /m /p:Configuration=${{matrix.configurations}} /p:Platform=${{matrix.platforms}} ${{env.SOLUTION_FILE_PATH}}
 
-    - name: Upload Artifacts
+    - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: DXErr-${{ matrix.platforms }}-${{ matrix.configurations }}
@@ -44,37 +44,21 @@ jobs:
         if-no-files-found: ignore
         retention-days: 1
 
-  release-artifact:
-    name: Create Artifacts
+  release-assets:
+    name: Create release assets
     runs-on: windows-latest
     needs: build
     
     steps:
-    - name: Merge Artifacts
+    - name: Merge build artifacts
       uses: actions/download-artifact@v4
       with:
-        path: ${{env.GITHUB_WORKSPACE}}/stage
+        path: ${{env.GITHUB_WORKSPACE}}/artifacts/stage
         merge-multiple: true
-    - run: pwd
-    - run: ls -R stage
 
-    - name: Upload Staged Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: Release
-        path: ${{env.GITHUB_WORKSPACE}}/stage/*
-
-  release:
-    name: Create Release
-    runs-on: windows-latest
-    needs: release-artifact
-    
-    steps:
-    - name: Download build artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: Release
-    - run: ls -R release
+    - name: Create ZIP archive
+      run: |
+        Compress-Archive -Path ${{env.GITHUB_WORKSPACE}}/artifacts/stage/* -DestinationPath ${{env.GITHUB_WORKSPACE}}/artifacts/Release.zip
 
     - name: Create Release
       id: create_release
