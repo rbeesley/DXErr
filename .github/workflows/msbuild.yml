@@ -57,7 +57,7 @@ jobs:
         if-no-files-found: ignore
         retention-days: 1
 
-  combine-build-artifacts:
+  release-artifact:
     runs-on: windows-latest
     needs: build
     
@@ -69,11 +69,6 @@ jobs:
         merge-multiple: true
     - run: ls -R release
 
-  create-release-artifact:
-    runs-on: windows-latest
-    needs: combine-build-artifacts
-
-    steps:
     - name: Upload Release Artifact
       uses: actions/upload-artifact@v4
       with:
