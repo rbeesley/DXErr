@@ -60,21 +60,32 @@ jobs:
       run: |
         Compress-Archive -Path ${{env.GITHUB_WORKSPACE}}/artifacts/stage/* -DestinationPath ${{env.GITHUB_WORKSPACE}}/artifacts/Release.zip
 
-    - name: Get release
-      id: get_release
-      if: startsWith(github.ref, 'refs/tags/')
-      uses: bruceadams/get-release@v1.3.2
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
+    # - name: Get release
+    #   id: get_release
+    #   if: startsWith(github.ref, 'refs/tags/')
+    #   uses: bruceadams/get-release@v1.3.2
+    #   env:
+    #     GITHUB_TOKEN: ${{ github.token }}
 
-    - name: Upload release asset
-      id: upload_release_asset
+    # - name: Upload release asset
+    #   id: upload_release_asset
+    #   if: startsWith(github.ref, 'refs/tags/')
+    #   uses: actions/upload-release-asset@v1
+    #   env:
+    #     GITHUB_TOKEN: ${{ github.token }}
+    #   with:
+    #     upload_url: ${{ steps.get_release.outputs.upload_url }}
+    #     asset_path: ${{env.GITHUB_WORKSPACE}}/artifacts/
+    #     asset_name: Release.zip
+    #     asset_content_type: application/zip
+
+    - name: Create release
+      id: create_release
       if: startsWith(github.ref, 'refs/tags/')
-      uses: actions/upload-release-asset@v1
+      uses: softprops/action-gh-release@v1
       env:
         GITHUB_TOKEN: ${{ github.token }}
       with:
-        upload_url: ${{ steps.get_release.outputs.upload_url }}
-        asset_path: ${{env.GITHUB_WORKSPACE}}/artifacts/
-        asset_name: Release.zip
-        asset_content_type: application/zip
+        files: ${{env.GITHUB_WORKSPACE}}/artifacts/Release.zip
+        generate_release_notes: true
+        make_latest: true
