@@ -51,7 +51,7 @@ jobs:
       with:
         name: DXErr-${{ matrix.platforms }}-${{ matrix.configurations }}
         path: |
-          bin/DXErr_*.h
+          bin/DXErr.h
           bin/DXErr_*.lib
           bin/DXErr_*.pdb
         if-no-files-found: ignore
