@@ -55,7 +55,8 @@ jobs:
       with:
         path: ${{env.GITHUB_WORKSPACE}}/stage
         merge-multiple: true
-    - run: ls -R release
+    - run: pwd
+    - run: ls -R stage
 
     - name: Upload Staged Artifact
       uses: actions/upload-artifact@v4
