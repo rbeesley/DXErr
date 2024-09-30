@@ -39,4 +39,3 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         files: ${{env.GITHUB_WORKSPACE}}/artifacts/Release.zip
-        make_latest: true
