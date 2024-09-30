@@ -38,4 +38,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ github.token }}
       with:
-        files: ${{env.GITHUB_WORKSPACE}}/artifacts/Release.zip
+        files: ${{env.GITHUB_WORKSPACE}}/artifacts/DXErr.zip
