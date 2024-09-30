@@ -40,6 +40,7 @@ jobs:
       with:
         name: DXErr-${{ matrix.platform }}-${{ matrix.configuration }}
         path: |
+          README.md
           bin/DXErr.h
           bin/DXErr_*.lib
           bin/DXErr_*.pdb

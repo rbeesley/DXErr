@@ -20,55 +20,45 @@
 #define WIN32_LEAN_AND_MEAN
 
 // Minimum required Windows.h defines for DXErr
+//#define NOGDI // - All GDI defines and routines
+//#define NOUSER // - All USER defines and routines
+//#define NOMB // - MB_ * and MessageBox()
+//#define NOMSG // - typedef MSG and associated routines
+
+// Not required for DXErr
 #define NOGDICAPMASKS // - CC_*, LC_*, PC_*, CP_*, TC_*, RC_
-//begin
 #define NOVIRTUALKEYCODES // - VK_ *
 #define NOWINMESSAGES // - WM_*, EM_*, LB_*, CB_*
 #define NOWINSTYLES // -  WS_*, CS_*, ES_*, LBS_*, SBS_*, CBS_*
 #define NOSYSMETRICS // - SM_ * // !NOSYSMETRICS Required for GetSystemMetrics() for icons
 #define NOMENUS // - MF_ * // !NOMENUS Required for GetSystemMenu
-//end
 #define NOICONS // - IDI_ *
-//begin
 #define NOKEYSTATES // - MK_ *
 #define NOSYSCOMMANDS // - SC_ * // !NOSYSCOMMANDS Required for EnableMenuItem
-//end
 #define NORASTEROPS // - Binary and Tertiary raster ops
-//begin
 #define NOSHOWWINDOW // - SW_ *
-//end
 #define OEMRESOURCE // - OEM Resource values
 #define NOATOM // - Atom Manager routines
 #define NOCLIPBOARD // - Clipboard routines
 #define NOCOLOR // - Screen colors
-//begin
 #define NOCTLMGR // - Control and Dialog routines // !NOCTLMGR Required for SetWindowSubclass
-//end
 #define NODRAWTEXT // - DrawText() and DT_ *
-//begin
 //#define NOGDI // - All GDI defines and routines
-//end
 #define NOKERNEL // - All KERNEL defines and routines
-//begin
 //#define NOUSER // - All USER defines and routines
 #define NONLS // - All NLS defines and routines // !NONLS Required for MultiByteToWideChar()
 //#define NOMB // - MB_ * and MessageBox()
-//end
 #define NOMEMMGR // - GMEM_*, LMEM_*, GHND, LHND, associated routines
 #define NOMETAFILE // - typedef METAFILEPICT
 #define NOMINMAX // - Macros min(a, b) and max(a, b)
-//begin
 //#define NOMSG // - typedef MSG and associated routines
-//end
 #define NOOPENFILE // - OpenFile(), OemToAnsi, AnsiToOem, and OF_*
 #define NOSCROLL // - SB_ * and scrolling routines
 #define NOSERVICE // - All Service Controller routines, SERVICE_ equates, etc.
 #define NOSOUND // - Sound driver routines
 #define NOTEXTMETRIC // - typedef TEXTMETRIC and associated routines
 #define NOWH // - SetWindowsHook and WH_ *
-//begin
 #define NOWINOFFSETS // - GWL_*, GCL_*, associated routines
-//end
 #define NOCOMM // - COMM driver routines
 #define NOKANJI // - Kanji support stuff.
 #define NOHELP // - Help engine interface.
@@ -82,6 +72,36 @@
 
 #ifndef STRICT
 #define STRICT
+#endif
+
+#ifdef _WIN64 // x64
+#ifdef _UNICODE
+#ifdef _DEBUG
+#pragma comment(lib, "DXErr_x64_ud.lib")
+#else
+#pragma comment(lib, "DXErr_x64_u.lib")
+#endif
+#else
+#ifdef _DEBUG
+#pragma comment(lib, "DXErr_x64_ad.lib")
+#else
+#pragma comment(lib, "DXErr_x64_a.lib")
+#endif
+#endif
+#else
+#ifdef _UNICODE
+#ifdef _DEBUG
+#pragma comment(lib, "DXErr_x86_ud.lib")
+#else
+#pragma comment(lib, "DXErr_x86_u.lib")
+#endif
+#else
+#ifdef _DEBUG
+#pragma comment(lib, "DXErr_x86_ad.lib")
+#else
+#pragma comment(lib, "DXErr_x86_a.lib")
+#endif
+#endif
 #endif
 
 #include <Windows.h>
