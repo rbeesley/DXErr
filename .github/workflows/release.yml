@@ -29,7 +29,7 @@ jobs:
 
     - name: Create ZIP archive
       run: |
-        Compress-Archive -Path ${{env.GITHUB_WORKSPACE}}/artifacts/stage/* -DestinationPath ${{env.GITHUB_WORKSPACE}}/artifacts/Release.zip
+        Compress-Archive -Path ${{env.GITHUB_WORKSPACE}}/artifacts/stage/* -DestinationPath ${{env.GITHUB_WORKSPACE}}/artifacts/DXErr.zip
 
     - name: Update release
       id: update_release
@@ -38,4 +38,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ github.token }}
       with:
-        files: ${{env.GITHUB_WORKSPACE}}/artifacts/Release.zip
+        files: ${{env.GITHUB_WORKSPACE}}/artifacts/DXErr.zip
