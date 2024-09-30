@@ -1,53 +1,22 @@
+name: Create Release
+
 on:
   workflow_dispatch:
   push:
     tags:
     - '*'
 
-name: Create Release
-
 permissions:
   contents: write
 
 jobs:
-  build:
-    name: Build
-    runs-on: windows-latest
+  call-reusable-workflow:
+    uses:
+      ./.github/workflows/build.yml
 
-    strategy:
-      matrix:
-        configurations: [Debug-Unicode, Release-Unicode, Debug-ANSI, Release-ANSI]
-        platforms: [x86, x64]
-
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: recursive
-
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v2
-
-    - name: Build
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      # Add additional options to the MSBuild command line here (like platform or verbosity level).
-      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: msbuild /m /p:Configuration=${{matrix.configurations}} /p:Platform=${{matrix.platforms}} ${{env.SOLUTION_FILE_PATH}}
-
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: DXErr-${{ matrix.platforms }}-${{ matrix.configurations }}
-        path: |
-          bin/DXErr.h
-          bin/DXErr_*.lib
-          bin/DXErr_*.pdb
-        if-no-files-found: ignore
-        retention-days: 1
-
-  release-assets:
+  create-release-assets:
     name: Create release assets
     runs-on: windows-latest
-    needs: build
     
     steps:
     - name: Merge build artifacts
@@ -60,32 +29,12 @@ jobs:
       run: |
         Compress-Archive -Path ${{env.GITHUB_WORKSPACE}}/artifacts/stage/* -DestinationPath ${{env.GITHUB_WORKSPACE}}/artifacts/Release.zip
 
-    # - name: Get release
-    #   id: get_release
-    #   if: startsWith(github.ref, 'refs/tags/')
-    #   uses: bruceadams/get-release@v1.3.2
-    #   env:
-    #     GITHUB_TOKEN: ${{ github.token }}
-
-    # - name: Upload release asset
-    #   id: upload_release_asset
-    #   if: startsWith(github.ref, 'refs/tags/')
-    #   uses: actions/upload-release-asset@v1
-    #   env:
-    #     GITHUB_TOKEN: ${{ github.token }}
-    #   with:
-    #     upload_url: ${{ steps.get_release.outputs.upload_url }}
-    #     asset_path: ${{env.GITHUB_WORKSPACE}}/artifacts/
-    #     asset_name: Release.zip
-    #     asset_content_type: application/zip
-
-    - name: Create release
-      id: create_release
+    - name: Update release
+      id: update_release
       if: startsWith(github.ref, 'refs/tags/')
       uses: softprops/action-gh-release@v2
       env:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         files: ${{env.GITHUB_WORKSPACE}}/artifacts/Release.zip
-        generate_release_notes: true
         make_latest: true
