@@ -30,19 +30,19 @@ jobs:
       uses: microsoft/setup-msbuild@v2
 
     - name: MSBuild
-      working-directory: ${{env.GITHUB_WORKSPACE}}
+      working-directory: ${{ env.GITHUB_WORKSPACE }}
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: msbuild /m /p:Configuration=${{matrix.configuration}} /p:Platform=${{matrix.platform}} ${{env.SOLUTION_FILE_PATH}}
+      run: msbuild /m /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} ${{ env.SOLUTION_FILE_PATH }}
 
     - name: Create artifact release directory
       run: |
-        mkdir ${{env.GITHUB_WORKSPACE}}/artifacts
-        cp README.md ${{env.GITHUB_WORKSPACE}}/artifacts
-        cp bin/DXErr.h ${{env.GITHUB_WORKSPACE}}/artifacts
-        cp bin/DXErr_*.lib ${{env.GITHUB_WORKSPACE}}/artifacts
+        mkdir ${{ env.GITHUB_WORKSPACE }}/artifacts
+        cp README.md ${{ env.GITHUB_WORKSPACE }}/artifacts
+        cp bin/DXErr.h ${{ env.GITHUB_WORKSPACE }}/artifacts
+        cp bin/DXErr_*.lib ${{ env.GITHUB_WORKSPACE }}/artifacts
         if (Test-Path "bin/DXErr_*.pdb") {
-          Copy-Item "bin/DXErr_*.pdb" -Destination ${{env.GITHUB_WORKSPACE}}/artifacts
+          Copy-Item "bin/DXErr_*.pdb" -Destination ${{ env.GITHUB_WORKSPACE }}/artifacts
         }   
 
     - name: Upload build artifacts
@@ -50,6 +50,6 @@ jobs:
       with:
         name: DXErr-${{ matrix.platform }}-${{ matrix.configuration }}
         path: |
-          ${{env.GITHUB_WORKSPACE}}/artifacts/*
+          ${{ env.GITHUB_WORKSPACE }}/artifacts/*
         if-no-files-found: ignore
         retention-days: 1
