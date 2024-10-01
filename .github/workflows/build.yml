@@ -41,9 +41,9 @@ jobs:
         cp README.md ${{env.GITHUB_WORKSPACE}}/artifacts
         cp bin/DXErr.h ${{env.GITHUB_WORKSPACE}}/artifacts
         cp bin/DXErr_*.lib ${{env.GITHUB_WORKSPACE}}/artifacts
-        if [ -f "bin/DXErr_*.pdb" ]; then
-          cp bin/DXErr_*.pdb ${{env.GITHUB_WORKSPACE}}/artifacts
-        fi
+        if (Test-Path "bin/DXErr_*.pdb") {
+          Copy-Item "bin/DXErr_*.pdb" -Destination ${{env.GITHUB_WORKSPACE}}/artifacts
+        }   
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
