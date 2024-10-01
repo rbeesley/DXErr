@@ -35,14 +35,21 @@ jobs:
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: msbuild /m /p:Configuration=${{matrix.configuration}} /p:Platform=${{matrix.platform}} ${{env.SOLUTION_FILE_PATH}}
 
+    - name: Create artifact release directory
+      run: |
+        mkdir ${{env.GITHUB_WORKSPACE}}/artifacts
+        cp README.md ${{env.GITHUB_WORKSPACE}}/artifacts
+        cp bin/DXErr.h ${{env.GITHUB_WORKSPACE}}/artifacts
+        cp bin/DXErr_*.lib ${{env.GITHUB_WORKSPACE}}/artifacts
+        if [ -f "bin/DXErr_*.pdb" ]; then
+          cp bin/DXErr_*.pdb ${{env.GITHUB_WORKSPACE}}/artifacts
+        fi
+
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: DXErr-${{ matrix.platform }}-${{ matrix.configuration }}
         path: |
-          README.md
-          bin/**/DXErr.h
-          bin/**/DXErr_*.lib
-          bin/**/DXErr_*.pdb
+          ${{env.GITHUB_WORKSPACE}}/artifacts/*
         if-no-files-found: ignore
         retention-days: 1
