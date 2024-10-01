@@ -74,32 +74,32 @@
 #define STRICT
 #endif
 
-#ifdef _WIN64 // x64
+#ifdef _WIN64
 #ifdef _UNICODE
-#ifdef _DEBUG
+#ifdef _DEBUG	// x64/UNICODE/DEBUG
 #pragma comment(lib, "DXErr_x64_ud.lib")
-#else
-#pragma comment(lib, "DXErr_x64_u.lib")
+#else			// x64/UNICODE/RELEASE
+#pragma comment(lib, "DXErr_x64_ur.lib")
 #endif
 #else
-#ifdef _DEBUG
+#ifdef _DEBUG	// x64/ANSI/DEBUG
 #pragma comment(lib, "DXErr_x64_ad.lib")
-#else
-#pragma comment(lib, "DXErr_x64_a.lib")
+#else			// x64/ANSI/RELEASE
+#pragma comment(lib, "DXErr_x64_ar.lib")
 #endif
 #endif
 #else
 #ifdef _UNICODE
-#ifdef _DEBUG
+#ifdef _DEBUG	// x86/UNICODE/DEBUG
 #pragma comment(lib, "DXErr_x86_ud.lib")
-#else
-#pragma comment(lib, "DXErr_x86_u.lib")
+#else			// x86/UNICODE/RELEASE
+#pragma comment(lib, "DXErr_x86_ur.lib")
 #endif
 #else
-#ifdef _DEBUG
+#ifdef _DEBUG	// x86/ANSI/DEBUG
 #pragma comment(lib, "DXErr_x86_ad.lib")
-#else
-#pragma comment(lib, "DXErr_x86_a.lib")
+#else			// x86/ANSI/RELEASE
+#pragma comment(lib, "DXErr_x86_ar.lib")
 #endif
 #endif
 #endif
