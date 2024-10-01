@@ -21,6 +21,7 @@ ChiliTomatoNoodle took that implementation and introduced an updated version in 
 This is a `DXERR.LIB` modern equivalent, providing support for ANSI and Unicode messages, saved from the Microsoft trash heap by Chuck Walbourn, extracted and made to work on ANSI and Unicode by nitrocaster, fixed by ChiliTomatoNoodle to resolve bugs and typos, and further modified to provide something which works on Windows 10/11 and x86/x64, for use with the inspired ChiliTomatoNoodle C++ 3D DirectX Tutorial project using modern C++ standards.
 
 ## Usage
+
 Update the `C/C++ > General > Additional Include Directories` and `Linker > General > Additional Library Directories` project properties to include this library directory. Something like `$(ProjectDir)libs\DXErr` will work for all configurations if you follow a structure where the libs directory is a subdirectory under the Project Directory.
 
 Then add the header to your source:
