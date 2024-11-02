@@ -618,8 +618,6 @@
     <ClCompile Include="src\DXErr.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\.github\workflows\build.yml" />
-    <None Include="..\.github\workflows\release.yml" />
     <None Include="src\DXGetErrorDescription.inl" />
     <None Include="src\DXGetErrorString.inl" />
     <None Include="src\DXTrace.inl" />

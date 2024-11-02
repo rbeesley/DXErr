@@ -30,4 +30,4 @@ Then add the header to your source:
 #include "DXErr.h"
 ```
 
-This will link the library to the project and configure it to automatically link to the coordinate of ANSI/Unicode, x86/x64, debug/release based on your project build. PDBs are included.
+This will link the library to the project and configure it to automatically link to the coordinate of ANSI/Unicode, x86/x64/ARM64, debug/release based on your project build. PDBs are included.

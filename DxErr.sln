@@ -5,11 +5,6 @@ VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXErr", "DxErr\DXErr.vcxproj", "{9909248F-84AA-40F6-BDD2-E75FD4C76172}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2864047E-A0B2-48E4-B59A-CA4CC1975B1F}"
-	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug-ANSI|ARM64 = Debug-ANSI|ARM64
