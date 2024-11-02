@@ -29,6 +29,8 @@
     <None Include="src\DXTrace.inl">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="..\.github\workflows\build.yml" />
+    <None Include="..\.github\workflows\release.yml" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DXErr.h">

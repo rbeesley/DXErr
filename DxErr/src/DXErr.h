@@ -30,23 +30,23 @@
 #define NOVIRTUALKEYCODES // - VK_ *
 #define NOWINMESSAGES // - WM_*, EM_*, LB_*, CB_*
 #define NOWINSTYLES // -  WS_*, CS_*, ES_*, LBS_*, SBS_*, CBS_*
-#define NOSYSMETRICS // - SM_ * // !NOSYSMETRICS Required for GetSystemMetrics() for icons
-#define NOMENUS // - MF_ * // !NOMENUS Required for GetSystemMenu
+#define NOSYSMETRICS // - SM_ *
+#define NOMENUS // - MF_ *
 #define NOICONS // - IDI_ *
 #define NOKEYSTATES // - MK_ *
-#define NOSYSCOMMANDS // - SC_ * // !NOSYSCOMMANDS Required for EnableMenuItem
+#define NOSYSCOMMANDS // - SC_ *
 #define NORASTEROPS // - Binary and Tertiary raster ops
 #define NOSHOWWINDOW // - SW_ *
 #define OEMRESOURCE // - OEM Resource values
 #define NOATOM // - Atom Manager routines
 #define NOCLIPBOARD // - Clipboard routines
 #define NOCOLOR // - Screen colors
-#define NOCTLMGR // - Control and Dialog routines // !NOCTLMGR Required for SetWindowSubclass
+#define NOCTLMGR // - Control and Dialog routines
 #define NODRAWTEXT // - DrawText() and DT_ *
 //#define NOGDI // - All GDI defines and routines
 #define NOKERNEL // - All KERNEL defines and routines
 //#define NOUSER // - All USER defines and routines
-#define NONLS // - All NLS defines and routines // !NONLS Required for MultiByteToWideChar()
+#define NONLS // - All NLS defines and routines
 //#define NOMB // - MB_ * and MessageBox()
 #define NOMEMMGR // - GMEM_*, LMEM_*, GHND, LHND, associated routines
 #define NOMETAFILE // - typedef METAFILEPICT
@@ -74,38 +74,52 @@
 #define STRICT
 #endif
 
-#ifdef _WIN64
-#ifdef _UNICODE
-#ifdef _DEBUG	// x64/UNICODE/DEBUG
+#include <Windows.h>
+#include <sal.h>
+
+#if defined(_WIN64)
+#if defined(_UNICODE)
+#if defined(_DEBUG)	// x64/UNICODE/DEBUG
 #pragma comment(lib, "DXErr_x64_ud.lib")
-#else			// x64/UNICODE/RELEASE
+#else				// x64/UNICODE/RELEASE
 #pragma comment(lib, "DXErr_x64_ur.lib")
 #endif
 #else
-#ifdef _DEBUG	// x64/ANSI/DEBUG
+#if defined(_DEBUG)	// x64/ANSI/DEBUG
 #pragma comment(lib, "DXErr_x64_ad.lib")
-#else			// x64/ANSI/RELEASE
+#else				// x64/ANSI/RELEASE
 #pragma comment(lib, "DXErr_x64_ar.lib")
 #endif
 #endif
+#elif defined(_ARM64)
+#if defined(_UNICODE)
+#if defined(_DEBUG)	// ARM64/UNICODE/DEBUG
+#pragma comment(lib, "DXErr_ARM64_ud.lib")
+#else				// ARM64/UNICODE/RELEASE
+#pragma comment(lib, "DXErr_ARM64_ur.lib")
+#endif
 #else
-#ifdef _UNICODE
-#ifdef _DEBUG	// x86/UNICODE/DEBUG
+#if defined(_DEBUG)	// ARM64/ANSI/DEBUG
+#pragma comment(lib, "DXErr_ARM64_ad.lib")
+#else				// ARM64/ANSI/RELEASE
+#pragma comment(lib, "DXErr_ARM64_ar.lib")
+#endif
+#endif
+#else
+#if defined(_UNICODE)
+#if defined(_DEBUG)	// x86/UNICODE/DEBUG
 #pragma comment(lib, "DXErr_x86_ud.lib")
-#else			// x86/UNICODE/RELEASE
+#else				// x86/UNICODE/RELEASE
 #pragma comment(lib, "DXErr_x86_ur.lib")
 #endif
 #else
-#ifdef _DEBUG	// x86/ANSI/DEBUG
+#if defined(_DEBUG)	// x86/ANSI/DEBUG
 #pragma comment(lib, "DXErr_x86_ad.lib")
-#else			// x86/ANSI/RELEASE
+#else				// x86/ANSI/RELEASE
 #pragma comment(lib, "DXErr_x86_ar.lib")
 #endif
 #endif
 #endif
-
-#include <Windows.h>
-#include <sal.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -121,6 +135,7 @@ extern "C" {
 	#else
 	#define DXGetErrorString DXGetErrorStringA
 	#endif
+
 	//--------------------------------------------------------------------------------------
 	// DXGetErrorDescription has to be modified to return a copy in a buffer rather than
 	// the original static string.
@@ -132,6 +147,7 @@ extern "C" {
 	#else
 	#define DXGetErrorDescription DXGetErrorDescriptionA
 	#endif
+
 	//--------------------------------------------------------------------------------------
 	//  DXTrace
 	//
@@ -147,6 +163,7 @@ extern "C" {
 	//
 	//  Return: The hr that was passed in.  
 	//--------------------------------------------------------------------------------------
+
 	HRESULT WINAPI DXTraceW(_In_z_ const WCHAR* strFile, _In_ DWORD dwLine, _In_ HRESULT hr, _In_opt_ const WCHAR* strMsg, _In_ bool bPopMsgBox);
 	//--------------------------------------------------------------------------------------
 	//  DXTrace
@@ -169,12 +186,13 @@ extern "C" {
 	#else
 	#define DXTrace DXTraceA
 	#endif
+
 	//--------------------------------------------------------------------------------------
 	//
 	// Helper macros
 	//
 	//--------------------------------------------------------------------------------------
-	#if defined(DEBUG) || defined(_DEBUG)
+	#if defined(_DEBUG)
 	#ifdef UNICODE
 	#define DXTRACE_MSG(str)              DXTrace( __FILEW__, (DWORD)__LINE__, 0, str, false )
 	#define DXTRACE_ERR(str,hr)           DXTrace( __FILEW__, (DWORD)__LINE__, hr, str, false )

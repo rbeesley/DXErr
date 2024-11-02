@@ -22,7 +22,7 @@ This is a `DXERR.LIB` modern equivalent, providing support for ANSI and Unicode 
 
 ## Usage
 
-Update the `C/C++ > General > Additional Include Directories` and `Linker > General > Additional Library Directories` project properties to include this library directory. Something like `$(ProjectDir)libs\DXErr` will work for all configurations if you follow a structure where the libs directory is a subdirectory under the Project Directory.
+Update the `C/C++ > General > Additional Include Directories` and `Linker > General > Additional Library Directories` project properties to include this library directory. Something like `$(ProjectDir)lib\DXErr` will work for all configurations if you follow a structure where the lib directory is a subdirectory under the Project Directory. It is dependent on _WIN64, _ARM64, _UNICODE, and _DEBUG macro definitions, so make sure those are set appropriately to match your target build configuration.
 
 Then add the header to your source:
 
@@ -30,4 +30,4 @@ Then add the header to your source:
 #include "DXErr.h"
 ```
 
-This will link the library to the project and configure it to automatically link to the coordinate of ANSI/Unicode, x86/x64, debug/release based on your project build. The PDBs are include for the debug builds, but they aren't necessary to use the library.
+This will link the library to the project and configure it to automatically link to the coordinate of ANSI/Unicode, x86/x64, debug/release based on your project build. PDBs are included.
