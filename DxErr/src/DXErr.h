@@ -80,15 +80,15 @@
 #if defined(_M_ARM64EC)
 #if defined(_UNICODE)
 #if defined(_DEBUG)	// ARM64/UNICODE/DEBUG
-#pragma comment(lib, "DXErr_ARM64EC_ud.lib")
+#pragma comment(lib, "DXErr_ARM64X_ud.lib")
 #else				// ARM64/UNICODE/RELEASE
-#pragma comment(lib, "DXErr_ARM64EC_ur.lib")
+#pragma comment(lib, "DXErr_ARM64X_ur.lib")
 #endif
 #else
 #if defined(_DEBUG)	// ARM64/ANSI/DEBUG
-#pragma comment(lib, "DXErr_ARM64EC_ad.lib")
+#pragma comment(lib, "DXErr_ARM64X_ad.lib")
 #else				// ARM64/ANSI/RELEASE
-#pragma comment(lib, "DXErr_ARM64EC_ar.lib")
+#pragma comment(lib, "DXErr_ARM64X_ar.lib")
 #endif
 #endif
 #elif defined(_M_ARM64)
