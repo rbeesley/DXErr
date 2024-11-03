@@ -30,6 +30,7 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="..\README.md" />
+    <None Include="..\.github\workflows\build.yml" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DXErr.h">

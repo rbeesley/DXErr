@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug-Unicode, Release-Unicode, Debug-ANSI, Release-ANSI]
-        platform: [x86, x64, ARM, ARM64, ARM64X]
+        platform: [x86, x64, ARM, ARM64, ARM64EC]
 
     steps:
     - name: Checkout source
