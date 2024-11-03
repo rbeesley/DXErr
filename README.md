@@ -18,11 +18,11 @@ Chuck Walbourn's MSDN blog and modified to comply with software that uses ANSI e
 
 ChiliTomatoNoodle took that implementation and introduced an updated version in [Chapter 14 of the HW3D C++ 3D DirectX Tutorial project](https://github.com/planetchili/hw3d/blob/T14-End/hw3d/dxerr.h).
 
-This is a `DXERR.LIB` modern equivalent, providing support for ANSI and Unicode messages, saved from the Microsoft trash heap by Chuck Walbourn, extracted and made to work on ANSI and Unicode by nitrocaster, fixed by ChiliTomatoNoodle to resolve bugs and typos, and further modified to provide something which works on Windows 10/11 and x86/x64, for use with the inspired ChiliTomatoNoodle C++ 3D DirectX Tutorial project using modern C++ standards.
+This is a `DXERR.LIB` modern equivalent, providing support for ANSI and Unicode messages, saved from the Microsoft trash heap by Chuck Walbourn, extracted and made to work on ANSI and Unicode by nitrocaster, fixed by ChiliTomatoNoodle to resolve bugs and typos, and further modified to provide something which works on Windows 10/11 and x86/x64/ARM/ARM64/ARM64EC, for use with the inspired ChiliTomatoNoodle C++ 3D DirectX Tutorial project using modern C++ standards.
 
 ## Usage
 
-Update the `C/C++ > General > Additional Include Directories` and `Linker > General > Additional Library Directories` project properties to include this library directory. Something like `$(ProjectDir)lib\DXErr` will work for all configurations if you follow a structure where the lib directory is a subdirectory under the Project Directory. It is dependent on _WIN64, _ARM64, _UNICODE, and _DEBUG macro definitions, so make sure those are set appropriately to match your target build configuration.
+Update the `C/C++ > General > Additional Include Directories` and `Linker > General > Additional Library Directories` project properties to include this library directory. Something like `$(ProjectDir)lib\DXErr` will work for all configurations if you follow a structure where the lib directory is a subdirectory under the Project Directory. What library loads is dependent on [Visual Studio predefined macro definitions](https://learn.microsoft.com/en-us/cpp/preprocessor/predefined-macros).
 
 Then add the header to your source:
 
@@ -30,4 +30,4 @@ Then add the header to your source:
 #include "DXErr.h"
 ```
 
-This will link the library to the project and configure it to automatically link to the coordinate of ANSI/Unicode, x86/x64/ARM64, debug/release based on your project build. PDBs are included.
+This will link the library to the project and configure it to automatically link to the coordinate of ANSI/Unicode, x86/x64/ARM/ARM64/ARM64EC, debug/release based on your project build. PDBs are included.
