@@ -29,6 +29,7 @@
     <None Include="src\DXTrace.inl">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="..\README.md" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DXErr.h">

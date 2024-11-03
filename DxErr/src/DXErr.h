@@ -77,21 +77,21 @@
 #include <Windows.h>
 #include <sal.h>
 
-#if defined(_WIN64)
+#if defined(_M_ARM64EC)
 #if defined(_UNICODE)
-#if defined(_DEBUG)	// x64/UNICODE/DEBUG
-#pragma comment(lib, "DXErr_x64_ud.lib")
-#else				// x64/UNICODE/RELEASE
-#pragma comment(lib, "DXErr_x64_ur.lib")
+#if defined(_DEBUG)	// ARM64/UNICODE/DEBUG
+#pragma comment(lib, "DXErr_ARM64X_ud.lib")
+#else				// ARM64/UNICODE/RELEASE
+#pragma comment(lib, "DXErr_ARM64X_ur.lib")
 #endif
 #else
-#if defined(_DEBUG)	// x64/ANSI/DEBUG
-#pragma comment(lib, "DXErr_x64_ad.lib")
-#else				// x64/ANSI/RELEASE
-#pragma comment(lib, "DXErr_x64_ar.lib")
+#if defined(_DEBUG)	// ARM64/ANSI/DEBUG
+#pragma comment(lib, "DXErr_ARM64X_ad.lib")
+#else				// ARM64/ANSI/RELEASE
+#pragma comment(lib, "DXErr_ARM64X_ar.lib")
 #endif
 #endif
-#elif defined(_ARM64)
+#elif defined(_M_ARM64)
 #if defined(_UNICODE)
 #if defined(_DEBUG)	// ARM64/UNICODE/DEBUG
 #pragma comment(lib, "DXErr_ARM64_ud.lib")
@@ -105,7 +105,35 @@
 #pragma comment(lib, "DXErr_ARM64_ar.lib")
 #endif
 #endif
+#elif defined(_M_ARM)
+#if defined(_UNICODE)
+#if defined(_DEBUG)	// ARM/UNICODE/DEBUG
+#pragma comment(lib, "DXErr_ARM_ud.lib")
+#else				// ARM/UNICODE/RELEASE
+#pragma comment(lib, "DXErr_ARM_ur.lib")
+#endif
 #else
+#if defined(_DEBUG)	// ARM/ANSI/DEBUG
+#pragma comment(lib, "DXErr_ARM_ad.lib")
+#else				// ARM/ANSI/RELEASE
+#pragma comment(lib, "DXErr_ARM_ar.lib")
+#endif
+#endif
+#elif defined(_M_X64) && !defined(_M_ARM64EC)
+#if defined(_UNICODE)
+#if defined(_DEBUG)	// x64/UNICODE/DEBUG
+#pragma comment(lib, "DXErr_x64_ud.lib")
+#else				// x64/UNICODE/RELEASE
+#pragma comment(lib, "DXErr_x64_ur.lib")
+#endif
+#else
+#if defined(_DEBUG)	// x64/ANSI/DEBUG
+#pragma comment(lib, "DXErr_x64_ad.lib")
+#else				// x64/ANSI/RELEASE
+#pragma comment(lib, "DXErr_x64_ar.lib")
+#endif
+#endif
+#elif defined(_WIN32) && !(defined(_M_ARM) || defined(_M_ARM64) || defined(_WIN64))
 #if defined(_UNICODE)
 #if defined(_DEBUG)	// x86/UNICODE/DEBUG
 #pragma comment(lib, "DXErr_x86_ud.lib")
